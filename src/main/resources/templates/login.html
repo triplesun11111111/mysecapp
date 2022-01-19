@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: "Rage Italic", sans-serif;
+            background-color: #303035;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-container {
+            background: #d6cfcf;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease-in-out;
+            width: 100%;
+            max-width: 400px;
+        }
+        .login-container h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            color: #3c3636;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+
+        .form-group input:focus {
+            border-color: #007BFF;
+            outline: none;
+            box-shadow: 0 0 4px rgba(208, 229, 255, 0.5);
+        }
+
+        .submit-btn {
+            background-color: #13589c;
+            color: #ffffff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #888;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<div class="login-container">
+    <h1>Login</h1>
+    <form method="post" action="/login">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input id="username" name="j_username" type="text" placeholder="Enter your username" required />
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input id="password" name="j_password" type="password" placeholder="Enter your password" required />
+        </div>
+        <button type="submit" class="submit-btn">Login</button>
+    </form>
+    <div class="footer">
+    </div>
+</div>
+</html>

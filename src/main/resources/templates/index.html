@@ -1,11 +1,55 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Spring Security Example</title>
+    <meta charset="UTF-8">
+    <title></title>
 </head>
 <body>
-<h1>Welcome to Index PAGE!</h1>
+<style>
+    body {
+        font-family: "Franklin Gothic Book", sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+    .button-container {
+        text-align: center;
+    }
+    .login-button {
+        background-color: #007bff;
+        color: white;
+        padding: 15px 30px;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 50px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease-in-out;
+    }
 
+    .login-button:hover {
+        background-color: #0056b3;
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+        transform: translateY(-4px);
+    }
 
+    .login-button:active {
+        background-color: #004085;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transform: translateY(2px);
+    }
+</style>
 </body>
-</html>
+<body>
+
+<a href="login.html" class="login-button">Login</a>
+<div>
+    <th:block th:each="msg : ${messages}">
+        <h1 th:text="${msg}"></h1>
+    </th:block>
+</div>
+</body>

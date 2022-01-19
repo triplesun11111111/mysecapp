@@ -1,0 +1,33 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>New User</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h1>Add New User</h1>-->
+<!--<form th:method="POST" th:action="@{/admin/save}" th:object="${user}">-->
+<!--    <label for="name">Name:</label>-->
+<!--    <input type="text" th:field="*{roles}" id="name"/>-->
+<!--    <br/>-->
+
+<!--    <label for="password">Password:</label>-->
+<!--    <input type="text" th:field="*{password}" id="password"/>-->
+<!--    <br/>-->
+
+<!--    <br/>-->
+<!--    <label>Roles:-->
+<!--        <input type="checkbox" name="roles"-->
+<!--               th:each="role : ${roles}"-->
+<!--               th:text="${role.name}"-->
+<!--               th:value="${role.id}"-->
+<!--               th:field="*{roles}"-->
+<!--        />-->
+<!--    </label>-->
+
+<!--    <input type="submit" value="Save"/>-->
+<!--</form>-->
+<!--<a th:href="@{/logout}" href="/logout">Logout</a>-->
+<!--</body>-->
+<!--</html>-->
