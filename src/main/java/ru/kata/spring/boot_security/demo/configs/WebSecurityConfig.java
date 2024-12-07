@@ -4,6 +4,7 @@ package ru.kata.spring.boot_security.demo.configs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -29,12 +30,13 @@ public class WebSecurityConfig {
         http
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/", "/index", "/login").permitAll()
-                        .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/admin/new", "/admin/save").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/user/**").hasAuthority("ROLE_USER")
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form.successHandler(successUserHandler)
                         .failureUrl("/login?error=true")
+                        .defaultSuccessUrl("/admin", true)
                         .permitAll())
                 .logout((logout) -> logout.permitAll()
                 .logoutUrl("/logout")

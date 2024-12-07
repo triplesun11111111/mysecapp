@@ -8,18 +8,23 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.kata.spring.boot_security.demo.entity.Role;
 import ru.kata.spring.boot_security.demo.entity.User;
+import ru.kata.spring.boot_security.demo.repo.RoleRepository;
 import ru.kata.spring.boot_security.demo.repo.UserRepository;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserDetailsService {
     private UserRepository userRepository;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private RoleRepository roleRepository;
 
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
@@ -50,8 +55,14 @@ public class UserService implements UserDetailsService {
         return userRepository.getOne(id);
     }
     @Transactional
-    public User saveUser(User user){
-        return userRepository.save(user);
+    public void saveUser(User user) {
+        User userFromDB = userRepository.findByUsername(user.getUsername());
+        if (userFromDB != null) {
+            return;
+        }
+        user.setRoles(Collections.singleton(new Role(1, "ROLE_USER")));
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
     }
     @Transactional
     public User updateUser(User user) {

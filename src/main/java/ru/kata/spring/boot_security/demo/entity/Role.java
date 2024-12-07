@@ -7,6 +7,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -30,14 +32,13 @@ public class Role implements GrantedAuthority{
         this.id = id;
     }
 
-    @ManyToMany(mappedBy = "roles")
-    private Set <ru.kata.spring.boot_security.demo.entity.User> users;
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
+    private Set<User> users = new HashSet<>();
 
     @Override
     public String getAuthority() {
         return name;
     }
-
     public String getRoleName() {
         return name;
     }

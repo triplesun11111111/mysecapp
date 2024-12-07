@@ -1,33 +1,119 @@
-<!--<!DOCTYPE html>-->
-<!--<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>New User</title>-->
-<!--</head>-->
-<!--<body>-->
-<!--<h1>Add New User</h1>-->
-<!--<form th:method="POST" th:action="@{/admin/save}" th:object="${user}">-->
-<!--    <label for="name">Name:</label>-->
-<!--    <input type="text" th:field="*{roles}" id="name"/>-->
-<!--    <br/>-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+<form th:action="@{/admin/save}" th:object="${user}" method="post">
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+</form>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New User</title>
+    <style>
 
-<!--    <label for="password">Password:</label>-->
-<!--    <input type="text" th:field="*{password}" id="password"/>-->
-<!--    <br/>-->
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1e1e1e;
+            color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-<!--    <br/>-->
-<!--    <label>Roles:-->
-<!--        <input type="checkbox" name="roles"-->
-<!--               th:each="role : ${roles}"-->
-<!--               th:text="${role.name}"-->
-<!--               th:value="${role.id}"-->
-<!--               th:field="*{roles}"-->
-<!--        />-->
-<!--    </label>-->
+        h1 {
+            text-align: center;
+            color: #00adb5;
+        }
 
-<!--    <input type="submit" value="Save"/>-->
-<!--</form>-->
-<!--<a th:href="@{/logout}" href="/logout">Logout</a>-->
-<!--</body>-->
-<!--</html>-->
+        form {
+            background-color: #2e2e2e;
+            border-radius: 8px;
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #f0f0f0;
+            font-weight: bold;
+        }
+
+        input[type="text"], input[type="checkbox"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #444;
+            border-radius: 5px;
+            background-color: #333;
+            color: #f0f0f0;
+            outline: none;
+        }
+
+        input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #00adb5;
+            border: none;
+            border-radius: 5px;
+            color: #1e1e1e;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #f0f0f0;
+            color: #00adb5;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 15px;
+            text-align: center;
+            color: #00adb5;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #f8f8f8;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <h1>Add New User</h1>
+    <form th:method="POST" th:action="@{/admin/save}" th:object="${user}">
+        <label for="name">Name:</label>
+        <input type="text" th:field="*{roles}" id="name"/>
+
+        <label for="password">Password:</label>
+        <input type="text" th:field="*{password}" id="password"/>
+
+        <label>Roles:</label>
+        <label>Roles:</label>
+        <div>
+            <label th:each="role : ${roles}">
+                <input type="checkbox" th:field="*{roles}" th:value="${role.id}"/>
+                <span th:text="${role.name}"></span>
+            </label>
+        </div>
+        <input type="submit" value="Save"/>
+    </form>
+    <a th:href="@{/logout}" href="/logout">Logout</a>
+</div>
+</body>
+</html>
