@@ -1,0 +1,17 @@
+<form th:method="POST" th:action="@{/admin/update}" th:object="${user}">
+    <input type="hidden" th:field="*{id}"/>
+    <label for="username">Username:</label>
+    <input type="text" th:field="*{username}" id="username"/>
+    <br/>
+
+    <label for="password">Password:</label>
+    <input type="password" th:field="*{password}" id="password"/>
+    <br/>
+
+    <label>Roles:</label><br/>
+    <div th:each="role : ${roles}">
+        <input type="checkbox" th:name="roles" th:value="${role.id}" th:checked="${user.roles.contains(role)}" th:text="${role.name}"/>
+    </div>
+
+    <input type="submit" value="Update"/>
+</form>

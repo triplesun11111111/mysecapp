@@ -1,6 +1,8 @@
 package ru.kata.spring.boot_security.demo.configs;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +18,7 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 @EnableWebSecurity
 public class WebSecurityConfig {
     private final SuccessUserHandler successUserHandler;
+    private static final Logger logger = LoggerFactory.getLogger(WebSecurityConfig.class);
 
     @Autowired
     public void setUserService(UserService userService) {

@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Cascade;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Setter
 @Data
@@ -28,7 +28,7 @@ public class User implements UserDetails {
     @Getter
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "user_roles",
+            name = "role_users",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
@@ -36,8 +36,9 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-        return roles;
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority(role.getRoleName()))
+                .collect(Collectors.toSet());
     }
 
     @Override

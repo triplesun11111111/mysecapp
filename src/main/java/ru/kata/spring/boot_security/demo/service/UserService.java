@@ -2,6 +2,8 @@ package ru.kata.spring.boot_security.demo.service;
 
 
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,6 +27,8 @@ public class UserService implements UserDetailsService {
     private UserRepository userRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     private RoleRepository roleRepository;
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+
 
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
@@ -38,6 +42,7 @@ public class UserService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        logger.info("Attempting to load user with username: {}", username);
         User user = findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException(String.format(username));
@@ -60,7 +65,7 @@ public class UserService implements UserDetailsService {
         if (userFromDB != null) {
             return;
         }
-        user.setRoles(Collections.singleton(new Role(1, "ROLE_USER")));
+        user.setRoles(user.getRoles());
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }

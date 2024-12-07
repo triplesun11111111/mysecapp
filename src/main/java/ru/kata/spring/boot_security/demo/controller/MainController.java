@@ -2,17 +2,10 @@ package ru.kata.spring.boot_security.demo.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.entity.Role;
 import ru.kata.spring.boot_security.demo.entity.User;
 import ru.kata.spring.boot_security.demo.repo.RoleRepository;
@@ -27,8 +20,8 @@ public class MainController {
     private RoleRepository roleRepository;
     private PasswordEncoder bCryptPasswordEncoder;
 
-    @Autowired
-    public void setPasswordEncoder(PasswordEncoder bCryptPasswordEncoder) {
+    public MainController(PasswordEncoder bCryptPasswordEncoder) {
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Autowired
@@ -48,11 +41,14 @@ public class MainController {
 
     @GetMapping("/user")
     public String userPage(Principal principal, Model model) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
         User user = userService.findByUsername(principal.getName());
-        model.addAttribute("user", user);
         if (user == null) {
             return "redirect:/login";
         }
+        model.addAttribute("user", user);
         return "user";
     }
 
@@ -75,8 +71,36 @@ public class MainController {
     public String saveUser(@ModelAttribute("user") User user) {
         String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
-        user.setRoles(user.getRoles());
         userService.saveUser(user);
+        return "redirect:/admin";
+    }
+
+    @GetMapping("/admin/edit/")
+    public String editUser(@RequestParam("id") Integer id, Model model) {
+        User user = userService.findById(Long.valueOf(id));
+        List<Role> roles = roleRepository.findAll();
+        model.addAttribute("user", user);
+        model.addAttribute("roles", roles);
+        return "edit";
+    }
+
+    @PostMapping("/admin/update")
+    public String updateUser(@RequestParam(value = "roles", required = false) String[] roles, @ModelAttribute("user") User user) {
+        Set<Role> userRoles = new HashSet<>();
+        if (roles != null) {
+            for (String roleId : roles) {
+                try {
+                    int id = Integer.parseInt(roleId);
+                    Optional<Role> role = roleRepository.findById((long) id);
+                    role.ifPresent(userRoles::add);
+                } catch (NumberFormatException ignored) {
+                }
+            }
+        } else {
+            userRoles = Collections.emptySet();
+        }
+        user.setRoles(userRoles);
+        userService.updateUser(user);
         return "redirect:/admin";
     }
 
@@ -90,5 +114,4 @@ public class MainController {
     public void setRoleRepository(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
-
 }
