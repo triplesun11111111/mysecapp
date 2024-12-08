@@ -14,7 +14,6 @@ import java.io.IOException;
 
 @Component
 public class SuccessUserHandler implements AuthenticationSuccessHandler {
-    private static final Logger logger = LoggerFactory.getLogger(SuccessUserHandler.class);
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         String role = authentication.getAuthorities().stream()

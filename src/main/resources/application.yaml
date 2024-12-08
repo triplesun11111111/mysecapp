@@ -14,7 +14,7 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/new_sp?allowPublicKeyRetrieval=true&useSSL=false
+    url: jdbc:mysql://localhost:3306/spring_db?allowPublicKeyRetrieval=true&useSSL=false
     username: root
     password: root
 
@@ -32,8 +32,3 @@ spring:
         suffix: .html
         mode: HTML
         cache: false
-
-
-logging:
-  level:
-    root=DEBUG:

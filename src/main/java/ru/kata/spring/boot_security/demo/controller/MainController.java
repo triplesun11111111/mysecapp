@@ -18,7 +18,7 @@ import java.util.*;
 public class MainController {
     private UserService userService;
     private RoleRepository roleRepository;
-    private PasswordEncoder bCryptPasswordEncoder;
+    private final PasswordEncoder bCryptPasswordEncoder;
 
     public MainController(PasswordEncoder bCryptPasswordEncoder) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -77,7 +77,7 @@ public class MainController {
 
     @GetMapping("/admin/edit/")
     public String editUser(@RequestParam("id") Integer id, Model model) {
-        User user = userService.findById(Long.valueOf(id));
+        User user = userService.findById(Math.toIntExact(Long.valueOf(id)));
         List<Role> roles = roleRepository.findAll();
         model.addAttribute("user", user);
         model.addAttribute("roles", roles);
@@ -106,7 +106,7 @@ public class MainController {
 
     @GetMapping("/admin/delete")
     public String deleteUser(@RequestParam("id") Integer id) {
-        userService.deleteById(Long.valueOf(id));
+        userService.deleteById(Math.toIntExact(Long.valueOf(id)));
         return "redirect:/admin";
     }
 
